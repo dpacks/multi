@@ -1,6 +1,6 @@
 {
   "name": "@dpack/multi",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "Library for managing multiple dPack instances.",
   "contributors": [
     "Jared Rice Sr. <jared@dwebs.io>",
