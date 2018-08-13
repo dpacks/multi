@@ -5,21 +5,21 @@ var parse = require('fast-json-parse')
 var assert = require('assert')
 var extend = require('xtend')
 
-module.exports = MultiDWeb
+module.exports = multidweb
 
-function MultiDWeb (db, opts, cb) {
+function multidweb (db, opts, cb) {
   if (!cb) {
     cb = opts
     opts = {}
   }
 
-  assert.equal(typeof db, 'object', 'MultiDWeb: db should be type object')
-  assert.equal(typeof cb, 'function', 'MultiDWeb: cb should be type function')
+  assert.equal(typeof db, 'object', 'multidweb: db should be type object')
+  assert.equal(typeof cb, 'function', 'multidweb: cb should be type function')
 
   var dwebFactory = opts.dweb || dweb
 
   multiDDrive(db, createVault, closeVault, function (err, drive) {
-    if (err) return cb(explain(err, 'MultiDWeb: error creating multiDDrive'))
+    if (err) return cb(explain(err, 'multidweb: error creating multiDDrive'))
     var multidweb = {
       readManifest: readManifest,
       create: create,

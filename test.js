@@ -5,14 +5,14 @@ var DWeb = require('@dpack/core')
 var path = require('path')
 var tape = require('tape')
 
-var MultiDWeb = require('./')
+var multidweb = require('./')
 var noop = function () {}
 
-tape('multidweb = MultiDWeb()', function (t) {
+tape('multidweb = multidweb()', function (t) {
   t.test('should assert input types', function (t) {
     t.plan(2)
-    t.throws(MultiDWeb.bind(null), /object/)
-    t.throws(MultiDWeb.bind(null, {}), /function/)
+    t.throws(multidweb.bind(null), /object/)
+    t.throws(multidweb.bind(null, {}), /function/)
   })
 })
 
@@ -20,7 +20,7 @@ tape('multidweb.create()', function (t) {
   t.test('should assert input types', function (t) {
     t.plan(4)
     var db = toilet({})
-    MultiDWeb(db, function (err, multidweb) {
+    multidweb(db, function (err, multidweb) {
       t.ifError(err, 'no error')
       t.throws(multidweb.create.bind(null), 'string')
       t.throws(multidweb.create.bind(null, ''), 'function')
@@ -28,16 +28,16 @@ tape('multidweb.create()', function (t) {
     })
   })
 
-  t.test('should create a dPack', function (t) {
+  t.test('should create a dWeb', function (t) {
     t.plan(4)
     var db = toilet({})
-    MultiDWeb(db, function (err, multidweb) {
+    multidweb(db, function (err, multidweb) {
       t.ifError(err, 'no error')
       var location = path.join('/tmp', String(Date.now()))
       mkdirp.sync(location)
       multidweb.create(location, function (err, dweb) {
         t.ifError(err, 'no error')
-        t.equal(typeof dweb, 'object', 'dPack exists')
+        t.equal(typeof dweb, 'object', 'dWeb exists')
         dweb.close(function (err) {
           t.ifError(err, 'no error')
           rimraf.sync(location)
@@ -46,10 +46,10 @@ tape('multidweb.create()', function (t) {
     })
   })
 
-  t.test('created dPack should not be exposed to the network', function (t) {
+  t.test('created dWeb should not be exposed to the network', function (t) {
     t.plan(3)
     var db = toilet({})
-    MultiDWeb(db, function (err, multidweb) {
+    multidweb(db, function (err, multidweb) {
       t.ifError(err, 'no error')
       var location = path.join('/tmp', String(Date.now()))
       mkdirp.sync(location)
@@ -65,11 +65,11 @@ tape('multidweb.create()', function (t) {
 })
 
 tape('multidweb.list()', function (t) {
-  t.test('should list all dPacks', function (t) {
+  t.test('should list all dWebs', function (t) {
     t.plan(4)
 
     var db = toilet({})
-    MultiDWeb(db, function (err, multidweb) {
+    multidweb(db, function (err, multidweb) {
       t.ifError(err, 'no error')
 
       var location = path.join('/tmp', String(Date.now()))
@@ -77,7 +77,7 @@ tape('multidweb.list()', function (t) {
       multidweb.create(location, function (err, dweb) {
         t.ifError(err, 'no error')
         var dwebs = multidweb.list()
-        t.equal(dwebs.length, 1, 'one dPack')
+        t.equal(dwebs.length, 1, 'one dWeb')
         dweb.close(function (err) {
           t.ifError(err, 'no error')
           rimraf.sync(location)
@@ -88,11 +88,11 @@ tape('multidweb.list()', function (t) {
     /* t.test('creation error', function (t) {
       t.plan(3)
       var db = toilet({})
-      MultiDWeb(db, {}, function (err, multidweb) {
+      multidweb(db, {}, function (err, multidweb) {
         t.ifError(err, 'no error')
         multidweb.create('/non/existing/path', function (err, dweb) {
           t.ok(err, 'error')
-          t.notOk(dweb, 'no dPack')
+          t.notOk(dweb, 'no dWeb')
         })
       })
     }) */
@@ -100,11 +100,11 @@ tape('multidweb.list()', function (t) {
 })
 
 tape('multidweb.close()', function (t) {
-  t.test('should be able to close a dPack by its key', function (t) {
+  t.test('should be able to close a dWeb by its key', function (t) {
     t.plan(4)
 
     var db = toilet({})
-    MultiDWeb(db, function (err, multidweb) {
+    multidweb(db, function (err, multidweb) {
       t.ifError(err, 'no error')
 
       var location = path.join('/tmp', String(Date.now()))
@@ -114,7 +114,7 @@ tape('multidweb.close()', function (t) {
         multidweb.close(dweb.key, function (err) {
           t.ifError(err, 'no error')
           var dwebs = multidweb.list()
-          t.equal(dwebs.length, 0, 'no dPacks')
+          t.equal(dwebs.length, 0, 'no dWebs')
           rimraf.sync(location)
         })
       })
@@ -132,7 +132,7 @@ tape('multidweb.readManifest', function (t) {
       ws.end(JSON.stringify({ name: 'hello-planet' }))
 
       var db = toilet({})
-      MultiDWeb(db, function (err, multidweb) {
+      multidweb(db, function (err, multidweb) {
         t.ifError(err, 'no error')
 
         var location = path.join('/tmp', String(Date.now()))
