@@ -1,6 +1,6 @@
 {
   "name": "@dpack/multi",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Library for managing multiple dPack instances.",
   "contributors": [
     "Jared Rice Sr. <jared@dwebs.io>",
@@ -14,8 +14,8 @@
     "coverage": "nyc report --reporter=text-lcov > coverage.lcov"
   },
   "dependencies": {
-    "@ddrive/multi": "ddrives/multi#master",
-    "@dpack/core": "~2.0.0",
+    "@ddrive/multi": "~0.1.1",
+    "@dpack/core": "~2.0.1",
     "explain-error": "^1.0.3",
     "fast-json-parse": "^1.0.2",
     "xtend": "^4.0.1"
