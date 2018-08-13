@@ -1,33 +1,33 @@
-var dpack = require('@dpack/core')
+var dweb = require('@dpack/core')
 var multiDDrive = require('@ddrive/multi')
 var explain = require('explain-error')
 var parse = require('fast-json-parse')
 var assert = require('assert')
 var extend = require('xtend')
 
-module.exports = MultiDPack
+module.exports = MultiDWeb
 
-function MultiDPack (db, opts, cb) {
+function MultiDWeb (db, opts, cb) {
   if (!cb) {
     cb = opts
     opts = {}
   }
 
-  assert.equal(typeof db, 'object', 'MultiDPack: db should be type object')
-  assert.equal(typeof cb, 'function', 'MultiDPack: cb should be type function')
+  assert.equal(typeof db, 'object', 'MultiDWeb: db should be type object')
+  assert.equal(typeof cb, 'function', 'MultiDWeb: cb should be type function')
 
-  var dpackFactory = opts.dpack || dpack
+  var dwebFactory = opts.dweb || dweb
 
   multiDDrive(db, createVault, closeVault, function (err, drive) {
-    if (err) return cb(explain(err, 'MultiDPack: error creating multiDDrive'))
-    var multidpack = {
+    if (err) return cb(explain(err, 'MultiDWeb: error creating multiDDrive'))
+    var multidweb = {
       readManifest: readManifest,
       create: create,
       disconnect: drive.disconnect,
       close: drive.close,
       list: drive.list
     }
-    cb(null, multidpack)
+    cb(null, multidweb)
 
     function create (dir, opts, cb) {
       if (!cb) {
@@ -50,19 +50,19 @@ function MultiDPack (db, opts, cb) {
   function createVault (data, done) {
     var dir = data.dir
     var _opts = extend(opts, data.opts)
-    dpackFactory(dir, _opts, done)
+    dwebFactory(dir, _opts, done)
   }
 
-  function closeVault (dpack, done) {
-    dpack.close(done)
+  function closeVault (dweb, done) {
+    dweb.close(done)
   }
 }
 
-function readManifest (dpack, cb) {
-  dpack.vault.readFile('dpack.json', function (err, buf) {
+function readManifest (dweb, cb) {
+  dweb.vault.readFile('dweb.json', function (err, buf) {
     if (err) return cb(err)
     var res = parse(buf.toString())
-    if (res.err) return cb(explain(res.err, "multidpack.readManifest: couldn't parse dpack.json file"))
+    if (res.err) return cb(explain(res.err, "multidweb.readManifest: couldn't parse dweb.json file"))
     cb(null, res.value)
   })
 }
